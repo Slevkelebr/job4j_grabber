@@ -12,7 +12,7 @@ import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
     public static void main(String[] args) throws IOException {
-        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+        try (InputStream in = new FileInputStream("./rabbit.properties")) {
             Properties properties = new Properties();
             properties.load(in);
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
