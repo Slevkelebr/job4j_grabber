@@ -16,14 +16,14 @@ public class Post {
     private String nameVacancy;
     private String textVacancy;
     private String linkDesc;
-    private Calendar Date;
+    private String date;
 
-    public Post(int id, String nameVacancy, String textVacancy, String linkDesc, Calendar date) {
+    public Post(int id, String nameVacancy, String textVacancy, String linkDesc, String date) {
         this.id = id;
         this.nameVacancy = nameVacancy;
         this.textVacancy = textVacancy;
         this.linkDesc = linkDesc;
-        Date = date;
+        this.date = date;
     }
 
     public int getId() {
@@ -58,11 +58,22 @@ public class Post {
         this.linkDesc = linkDesc;
     }
 
-    public Calendar getDate() {
-        return Date;
+    public String getDate() {
+        return date;
     }
 
-    public void setDate(Calendar date) {
-        Date = date;
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{"
+                 + "id=" + id
+                + ", nameVacancy='" + nameVacancy + '\''
+                + ", textVacancy='" + textVacancy + '\''
+                + ", linkDesc='" + linkDesc + '\''
+                + ", date='" + date + '\''
+                + '}';
     }
 }
