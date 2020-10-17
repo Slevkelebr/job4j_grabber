@@ -20,7 +20,7 @@ public class FormatDate {
     private final Pattern pattern = Pattern.compile("\\d{2}\\s\\D{3}\\s\\d{2}.\\s\\d{2}.\\d{2}");
 
     /**
-     * Класс сопоставляет строку для получения даты в формате {@code dd MMM yy, H:m}.
+     * Класс сопоставляет строку для получения даты в формате {@code dd MMM yy, HH:mm}.
      * @param str строка.
      * @return дата.
      */
@@ -33,15 +33,15 @@ public class FormatDate {
     }
 
     /**
-     * Форматирует дату после парсинга в формате {@code dd-MM-yyyy H:m}.
+     * Форматирует дату после парсинга в формате {@code dd-MM-yyyy HH:mm}.
      * @param oldDate дата после парсинга.
      * @return отформатированная дата.
      * @throws ParseException
      */
     public String formatDate(String oldDate) throws ParseException {
         String newDate = replaceMonthOrDate(oldDate);
-        Date date = new SimpleDateFormat("dd MMM yy, H:m").parse(newDate);
-        return new SimpleDateFormat("dd-MM-yyyy H:m").format(date);
+        Date date = new SimpleDateFormat("dd MMM yy, HH:mm").parse(newDate);
+        return new SimpleDateFormat("dd-MM-yyyy HH:mm").format(date);
     }
 
     /**
@@ -52,7 +52,7 @@ public class FormatDate {
     private String replaceMonthOrDate(String date) {
         Date today = new Date();
         Calendar day = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yy, H:m");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yy, HH:mm");
         String[] str = date.split(" ");
         if (str[0].contains("сегодня")) {
             str[0] = formatter.format(today);
@@ -66,6 +66,10 @@ public class FormatDate {
             str[1] = "сент.";
         } else if (str[1].equals("май")) {
             return date;
+        } else if (str[1].equals("ноя")) {
+            str[1] = "нояб.";
+        } else if (str[1].equals("фев")) {
+            str[1] = "февр.";
         } else {
             str[1] = str[1] + ".";
         }

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс показывает как распарсить HTML страницу используя JSOUP.
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter;
  * @since 17.10.2020
  */
 
-public class SqlRuParse {
+public class SqlRuParse implements Parse {
 
     private final FormatDate fd = new FormatDate();
 
@@ -30,14 +32,15 @@ public class SqlRuParse {
      * @throws IOException
      * @throws ParseException
      */
-    public Post createPost(String url) throws IOException, ParseException {
+    @Override
+    public Post detail(String url) throws IOException, ParseException {
         Document doc = Jsoup.connect(url).get();
         Elements vacancy = doc.select(".messageHeader");
         Elements textVacancy = doc.select(".msgBody");
         Elements msgFooter = doc.select("td.msgFooter");
-        String date = fd.getDateForPost(msgFooter.get(1).text());
+        String date = fd.getDateForPost(msgFooter.get(0).text());
         String formatDate = fd.formatDate(date);
-        return new Post(vacancy.get(1).text(), textVacancy.get(1).text(),
+        return new Post(vacancy.get(0).text(), textVacancy.get(1).text(),
                 url, LocalDateTime.parse(formatDate, DateTimeFormatter.ofPattern("dd-MM-yyyy H:m")));
     }
 
@@ -47,24 +50,23 @@ public class SqlRuParse {
      * @throws ParseException
      * @throws IOException
      */
-    private void parseHtml(String url) throws ParseException, IOException {
+    @Override
+    public List<Post> list(String url) throws IOException, ParseException {
+        List<Post> listPost = new ArrayList<>();
         Document doc = Jsoup.connect(url).get();
         Elements row = doc.select(".postslisttopic");
-        for (Element td : row) {
-            Element href = td.child(0);
-            System.out.println(href.attr("href"));
-            System.out.println(href.text());
-            Element date = td.parent().child(5);
-            System.out.println(fd.formatDate(date.text()));
-            System.out.println("------------------------------------------------------------");
+        for (int i = 3; i < row.size(); i++) {
+            Element href = row.get(i).child(0);
+            listPost.add(detail(href.attr("href")));
         }
+        return listPost;
     }
 
     public static void main(String[] args) throws Exception {
         SqlRuParse sql = new SqlRuParse();
         String url = "https://www.sql.ru/forum/job-offers/";
         for (int i = 1; i <= 5; i++) {
-            sql.parseHtml(url + i);
+            sql.list(url + i);
         }
     }
 
