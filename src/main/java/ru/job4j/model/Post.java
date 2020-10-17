@@ -1,13 +1,13 @@
 package ru.job4j.model;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 /**
  * Модель данных.
  *
  * @author Sergey Frolov
- * @version 1.0
- * @since 16.10.2020
+ * @version 2.0
+ * @since 17.10.2020
  */
 
 public class Post {
@@ -16,10 +16,9 @@ public class Post {
     private String nameVacancy;
     private String textVacancy;
     private String linkDesc;
-    private String date;
+    private LocalDateTime date;
 
-    public Post(int id, String nameVacancy, String textVacancy, String linkDesc, String date) {
-        this.id = id;
+    public Post(String nameVacancy, String textVacancy, String linkDesc, LocalDateTime date) {
         this.nameVacancy = nameVacancy;
         this.textVacancy = textVacancy;
         this.linkDesc = linkDesc;
@@ -58,11 +57,11 @@ public class Post {
         this.linkDesc = linkDesc;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
