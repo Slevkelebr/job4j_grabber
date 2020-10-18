@@ -1,6 +1,6 @@
 package ru.job4j.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 /**
  * Модель данных.
@@ -16,9 +16,9 @@ public class Post {
     private String nameVacancy;
     private String textVacancy;
     private String linkDesc;
-    private LocalDateTime date;
+    private Timestamp date;
 
-    public Post(String nameVacancy, String textVacancy, String linkDesc, LocalDateTime date) {
+    public Post(String nameVacancy, String textVacancy, String linkDesc, Timestamp date) {
         this.nameVacancy = nameVacancy;
         this.textVacancy = textVacancy;
         this.linkDesc = linkDesc;
@@ -57,11 +57,11 @@ public class Post {
         this.linkDesc = linkDesc;
     }
 
-    public LocalDateTime getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import ru.job4j.model.Post;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +42,7 @@ public class SqlRuParse implements Parse {
         String date = fd.getDateForPost(msgFooter.get(0).text());
         String formatDate = fd.formatDate(date);
         return new Post(vacancy.get(0).text(), textVacancy.get(1).text(),
-                url, LocalDateTime.parse(formatDate, DateTimeFormatter.ofPattern("dd-MM-yyyy H:m")));
+                url, Timestamp.valueOf(LocalDateTime.parse(formatDate, DateTimeFormatter.ofPattern("dd-MM-yyyy H:m"))));
     }
 
     /**
@@ -63,11 +64,13 @@ public class SqlRuParse implements Parse {
     }
 
     public static void main(String[] args) throws Exception {
+        long l = System.currentTimeMillis();
         SqlRuParse sql = new SqlRuParse();
         String url = "https://www.sql.ru/forum/job-offers/";
         for (int i = 1; i <= 5; i++) {
             sql.list(url + i);
         }
+        System.out.println(System.currentTimeMillis() - l);
     }
 
 }
