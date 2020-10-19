@@ -18,9 +18,21 @@ import java.util.Properties;
 
 public class PsqlStore implements Store, AutoCloseable {
 
-    private final Connection cnn;
+    private Connection cnn;
 
-    public PsqlStore() {
+    public PsqlStore(Properties cfg) {
+        try {
+            Class.forName(cfg.getProperty("jdbc.driver"));
+            cnn = DriverManager.getConnection(
+                    cfg.getProperty("jdbc.url"),
+                    cfg.getProperty("jdbc.username"),
+                    cfg.getProperty("jdbc.password"));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+/*    public PsqlStore() {
         try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
             Properties cfg = new Properties();
             cfg.load(in);
@@ -32,7 +44,7 @@ public class PsqlStore implements Store, AutoCloseable {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-    }
+    }*/
 
     @Override
     public void save(Post post) {
@@ -104,7 +116,7 @@ public class PsqlStore implements Store, AutoCloseable {
         }
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         PsqlStore p = new PsqlStore();
         Post post = new Post("123asd", "aasddf123", "htt", new Timestamp(1324865792));
         p.save(post);
@@ -115,5 +127,5 @@ public class PsqlStore implements Store, AutoCloseable {
 
         System.out.println(p.findById(String.valueOf(post.getId())));
 
-    }
+    }*/
 }

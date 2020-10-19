@@ -63,7 +63,7 @@ public class SqlRuParse implements Parse {
         return listPost;
     }
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         long l = System.currentTimeMillis();
         SqlRuParse sql = new SqlRuParse();
         String url = "https://www.sql.ru/forum/job-offers/";
@@ -71,6 +71,6 @@ public class SqlRuParse implements Parse {
             sql.list(url + i);
         }
         System.out.println(System.currentTimeMillis() - l);
-    }
+    }*/
 
 }
