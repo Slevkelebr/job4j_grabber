@@ -14,5 +14,5 @@ import ru.job4j.parse.Parse;
  */
 
 public interface Grab {
-    void init(Parse parse, Store store, Scheduler scheduler) throws SchedulerException;
+    void init(Parse parse, Store store, Scheduler scheduler) throws SchedulerException, InterruptedException;
 }

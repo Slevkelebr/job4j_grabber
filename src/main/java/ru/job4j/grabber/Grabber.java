@@ -46,7 +46,7 @@ public class Grabber implements Grab {
     }
 
     @Override
-    public void init(Parse parse, Store store, Scheduler scheduler) throws SchedulerException {
+    public void init(Parse parse, Store store, Scheduler scheduler) throws SchedulerException, InterruptedException {
         JobDataMap data = new JobDataMap();
         data.put("store", store);
         data.put("parse", parse);
@@ -61,6 +61,7 @@ public class Grabber implements Grab {
                 .withSchedule(times)
                 .build();
         scheduler.scheduleJob(job, trigger);
+        Thread.sleep(60000);
         scheduler.shutdown(true);
     }
 
@@ -79,11 +80,13 @@ public class Grabber implements Grab {
         public void execute(JobExecutionContext context) throws JobExecutionException {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
-            Parse parse = (Parse) map.get("store");
+            Parse parse = (Parse) map.get("parse");
             try {
                 List<Post> posts = parse.list("https://www.sql.ru/forum/job-offers/");
                 for (Post post : posts) {
-                    store.save(post);
+                    if (post.getNameVacancy() != null) {
+                        store.save(post);
+                    }
                 }
             } catch (IOException | ParseException e) {
                 e.printStackTrace();

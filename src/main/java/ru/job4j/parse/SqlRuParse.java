@@ -37,6 +37,9 @@ public class SqlRuParse implements Parse {
     public Post detail(String url) throws IOException, ParseException {
         Document doc = Jsoup.connect(url).get();
         Elements vacancy = doc.select(".messageHeader");
+        if (!vacancy.get(0).text().contains("Java") || vacancy.get(0).text().contains("JavaScript")) {
+            return new Post();
+        }
         Elements textVacancy = doc.select(".msgBody");
         Elements msgFooter = doc.select("td.msgFooter");
         String date = fd.getDateForPost(msgFooter.get(0).text());
