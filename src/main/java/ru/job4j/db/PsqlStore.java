@@ -2,7 +2,6 @@ package ru.job4j.db;
 
 import ru.job4j.model.Post;
 
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,24 +31,11 @@ public class PsqlStore implements Store, AutoCloseable {
         }
     }
 
-/*    public PsqlStore() {
-        try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
-            Properties cfg = new Properties();
-            cfg.load(in);
-            Class.forName(cfg.getProperty("jdbc.driver"));
-            cnn = DriverManager.getConnection(
-                    cfg.getProperty("jdbc.url"),
-                    cfg.getProperty("jdbc.username"),
-                    cfg.getProperty("jdbc.password"));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }*/
-
     @Override
     public void save(Post post) {
         try (PreparedStatement statement =
-                     cnn.prepareStatement("INSERT INTO post (name, text, link, created) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                     cnn.prepareStatement("INSERT INTO post (name, text, link, created) VALUES (?, ?, ?, ?) ON CONFLICT (link) DO NOTHING",
+                             Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getNameVacancy());
             statement.setString(2, post.getTextVacancy());
             statement.setString(3, post.getLinkDesc());
@@ -115,17 +101,4 @@ public class PsqlStore implements Store, AutoCloseable {
             cnn.close();
         }
     }
-
-/*    public static void main(String[] args) {
-        PsqlStore p = new PsqlStore();
-        Post post = new Post("123asd", "aasddf123", "htt", new Timestamp(1324865792));
-        p.save(post);
-        System.out.println(post.getId());
-
-        List<Post> posts = p.getAll();
-        posts.forEach(System.out::println);
-
-        System.out.println(p.findById(String.valueOf(post.getId())));
-
-    }*/
 }

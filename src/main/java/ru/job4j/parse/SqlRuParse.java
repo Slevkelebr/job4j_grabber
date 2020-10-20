@@ -37,7 +37,7 @@ public class SqlRuParse implements Parse {
     public Post detail(String url) throws IOException, ParseException {
         Document doc = Jsoup.connect(url).get();
         Elements vacancy = doc.select(".messageHeader");
-        if (!vacancy.get(0).text().contains("Java") || vacancy.get(0).text().contains("JavaScript")) {
+        if (!vacancy.get(0).text().contains("Java") || vacancy.get(0).text().contains("JavaScrip")) {
             return new Post();
         }
         Elements textVacancy = doc.select(".msgBody");
@@ -65,15 +65,5 @@ public class SqlRuParse implements Parse {
         }
         return listPost;
     }
-
-/*    public static void main(String[] args) throws Exception {
-        long l = System.currentTimeMillis();
-        SqlRuParse sql = new SqlRuParse();
-        String url = "https://www.sql.ru/forum/job-offers/";
-        for (int i = 1; i <= 5; i++) {
-            sql.list(url + i);
-        }
-        System.out.println(System.currentTimeMillis() - l);
-    }*/
 
 }
