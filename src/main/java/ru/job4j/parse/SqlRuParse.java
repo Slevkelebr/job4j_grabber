@@ -18,12 +18,14 @@ import java.util.List;
  * Класс показывает как распарсить HTML страницу используя JSOUP.
  *
  * @author Sergey Frolov
- * @version 4.0
- * @since 17.10.2020
+ * @version 5.0
+ * @since 23.10.2020
  */
 
 public class SqlRuParse implements Parse {
 
+    private static final String INCLUDED_LANGUAGE = "Java";
+    private static final String EXCLUDED_LANGUAGE = "JavaScrip";
     private final FormatDate fd = new FormatDate();
 
     /**
@@ -37,7 +39,7 @@ public class SqlRuParse implements Parse {
     public Post detail(String url) throws IOException, ParseException {
         Document doc = Jsoup.connect(url).get();
         Elements vacancy = doc.select(".messageHeader");
-        if (!vacancy.get(0).text().contains("Java") || vacancy.get(0).text().contains("JavaScrip")) {
+        if (!checkLanguage(vacancy.get(0).text())) {
             return new Post();
         }
         Elements textVacancy = doc.select(".msgBody");
@@ -46,6 +48,14 @@ public class SqlRuParse implements Parse {
         String formatDate = fd.formatDate(date);
         return new Post(vacancy.get(0).text(), textVacancy.get(1).text(),
                 url, Timestamp.valueOf(LocalDateTime.parse(formatDate, DateTimeFormatter.ofPattern("dd-MM-yyyy H:m"))));
+    }
+
+    private boolean checkLanguage(String str) {
+        boolean result = true;
+        if (str.contains("Java") || str.contains("JavaScrip")) {
+            result = false;
+        }
+        return result;
     }
 
     /**
