@@ -7,7 +7,7 @@ services:
   - postgresql
 
 before_install:
-  - psql -c 'create database tracker_db;' -U postgres
+  - psql -c 'create database grabber_db;' -U postgres
 
 # используем режим обычного пользователя для сборки проекта.
 sudo: false
