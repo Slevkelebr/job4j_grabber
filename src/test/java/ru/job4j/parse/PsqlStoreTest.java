@@ -15,7 +15,7 @@ import java.util.Properties;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
-public class SqlRuParseTest {
+public class PsqlStoreTest {
 
     public Connection init() {
         try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("app.properties")) {
