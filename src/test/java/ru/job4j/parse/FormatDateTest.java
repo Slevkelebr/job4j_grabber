@@ -32,11 +32,4 @@ public class FormatDateTest {
         assertEquals(actual, expected);
     }
 
-    @Test(expected = ParseException.class)
-    public void whenDateFormatException() throws ParseException {
-        FormatDate formatDate = new FormatDate();
-        formatDate.formatDate("21 ок 20, 20:46");
-
-    }
-
 }
