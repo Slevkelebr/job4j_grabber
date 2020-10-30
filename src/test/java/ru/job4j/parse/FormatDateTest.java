@@ -27,7 +27,8 @@ public class FormatDateTest {
     @Test
     public void whenDateFormatTrue() throws ParseException {
         FormatDate formatDate = new FormatDate();
-        String actual = formatDate.formatDate("21 окт 20, 20:46");
+        String oldDate = "21 окт 20, 20:46";
+        String actual = formatDate.formatDate(oldDate);
         String expected = "21-10-2020 20:46";
         assertEquals(actual, expected);
     }
