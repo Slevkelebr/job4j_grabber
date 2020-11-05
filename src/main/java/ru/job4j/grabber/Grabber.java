@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -21,7 +22,7 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
- * .
+ * Класс содержит основную логику приложения.
  *
  * @author Sergey Frolov
  * @version 1.0
@@ -29,6 +30,12 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 
 public class Grabber implements Grab {
+    /*
+    Количество считываемых страниц с сайта.
+     */
+    private static final int COUNT = 5;
+    private static final String LINK = "https://www.sql.ru/forum/job-offers/";
+
     private final Properties cfg = new Properties();
 
     public Store store() throws IOException {
@@ -68,24 +75,18 @@ public class Grabber implements Grab {
         scheduler.shutdown(true);
     }
 
-    /**
-     * Внутренний класс
-     */
     public static class GrabJob implements Job {
 
-        /**
-         * Метод
-         *
-         * @param context - context
-         * @throws JobExecutionException
-         */
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
+            List<Post> posts = new ArrayList<>();
             try {
-                List<Post> posts = parse.list("https://www.sql.ru/forum/job-offers/");
+                for (int i = 1; i <= COUNT; i++) {
+                   posts = parse.list(LINK + i);
+                }
                 for (Post post : posts) {
                     if (post.getNameVacancy() != null) {
                         store.save(post);
