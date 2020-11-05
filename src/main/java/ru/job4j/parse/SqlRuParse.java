@@ -24,8 +24,8 @@ import java.util.List;
 
 public class SqlRuParse implements Parse {
 
-    private static final String INCLUDED_LANGUAGE = "Java";
-    private static final String EXCLUDED_LANGUAGE = "JavaScript";
+    private static final String INCLUDED_LANGUAGE = "java";
+    private static final String EXCLUDED_LANGUAGE = "javascript";
     private final FormatDate fd = new FormatDate();
 
     /**
@@ -52,7 +52,8 @@ public class SqlRuParse implements Parse {
 
     private boolean checkLanguage(String str) {
         boolean result = true;
-        if (!str.contains(INCLUDED_LANGUAGE) || str.contains(EXCLUDED_LANGUAGE)) {
+        String text = str.toLowerCase();
+        if (!text.contains(INCLUDED_LANGUAGE) || text.contains(EXCLUDED_LANGUAGE)) {
             result = false;
         }
         return result;
